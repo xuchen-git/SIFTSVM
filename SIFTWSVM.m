@@ -1,16 +1,16 @@
 function testY=SIFTWSVM(testX,A,B,C,c1,c2,c3,c4,alpha)
-%A:+1£¬B:-1£¬C: no label
+%A:+1ï¼ŒB:-1ï¼ŒC: no label
 %q:absolute value of positive and negative sample difference
-%beta:weight bounds£¬
+%beta:weight boundsï¼Œ
 %alpha: gap parameter
 %c1,c2,c3,c4 model parameter
-%Ò»¡¢main program
+%main program
 n1=size(A,1);
 n2=size(B,1);
 q=abs(n1-n2);
 % initialization
 [u1,u2]=TSVM(A,B,c1,c2,c3,c4);%u1=[w1;b1]
-[Yc,C,D]=GY4(A,B,C,u1,u2,c1,c2,c3,c4,n1,n2,q);%¸øYÌù±êÇ©
+[Yc,C,D]=GY4(A,B,C,u1,u2,c1,c2,c3,c4,n1,n2,q);
 m=ceil(0.1*size(C,1));
 while(1)
     [A,B,C,D,Yc,u1,u2,sign]=GZ(A,B,C,D,Yc,u1,u2,alpha,c1,c2,c3,c4,n1,n2,q,m);
@@ -39,8 +39,7 @@ for i=1:m
     end
 end
 end
-%¶ş¡¢four subprograms
-%º¯ÊıGZ
+%four subprograms
 function [A,B,C,D,Yc,u1,u2,sign]=GZ(A,B,C,D,Yc,u1,u2,alpha,c1,c2,c3,c4,n1,n2,q,m)
 sign=1;
 %the first part is to find the weight of A, B, C
@@ -67,7 +66,7 @@ if size(C,1)~=0
 end
 end
 
-%º¯ÊıGSabc1
+%GSabc1
 function [sA,sB,sC]=GSabc1(A,B,C,Yc,u1,u2,alpha)
 delta=10e-6;
 [m1,n]=size(A);
@@ -77,12 +76,12 @@ w1=u1(1:n,:);
 b1=u1(n+1,:);
 w2=u2(1:n,:);
 b2=u2(n+1,:);
-LA1=zeros(m1,1);%AÖĞÕıÀàµãµ½ÕıÀàÏßµÄ¾àÀë£¨´ø·ûºÅ£©
-LA2=zeros(m2,1);%BÖĞ¸ºÀàµãµ½ÕıÀàÏßµÄ¾àÀë£¨´ø·ûºÅ£©
-LB1=zeros(m2,1);%BÖĞ¸ºÀàµãµ½¸ºÀàÏßµÄ¾àÀë£¨´ø·ûºÅ£©
-LB2=zeros(m1,1);%BÖĞÕıÀàµãµ½¸ºÀàÏßµÄ¾àÀë£¨´ø·ûºÅ£©
-LC1=zeros(m3,1);%ÎŞ±êÇ©µãµ½ÕıÀàÏßµÄ¾àÀë£¨´ø·ûºÅ£©
-LC2=zeros(m3,1);%ÎŞ±êÇ©µãµ½¸ºÀàÏßµÄ¾àÀë£¨´ø·ûºÅ£©
+LA1=zeros(m1,1);%Aä¸­æ­£ç±»ç‚¹åˆ°æ­£ç±»çº¿çš„è·ç¦»ï¼ˆå¸¦ç¬¦å·ï¼‰
+LA2=zeros(m2,1);%Bä¸­è´Ÿç±»ç‚¹åˆ°æ­£ç±»çº¿çš„è·ç¦»ï¼ˆå¸¦ç¬¦å·ï¼‰
+LB1=zeros(m2,1);%Bä¸­è´Ÿç±»ç‚¹åˆ°è´Ÿç±»çº¿çš„è·ç¦»ï¼ˆå¸¦ç¬¦å·ï¼‰
+LB2=zeros(m1,1);%Bä¸­æ­£ç±»ç‚¹åˆ°è´Ÿç±»çº¿çš„è·ç¦»ï¼ˆå¸¦ç¬¦å·ï¼‰
+LC1=zeros(m3,1);%æ— æ ‡ç­¾ç‚¹åˆ°æ­£ç±»çº¿çš„è·ç¦»ï¼ˆå¸¦ç¬¦å·ï¼‰
+LC2=zeros(m3,1);%æ— æ ‡ç­¾ç‚¹åˆ°è´Ÿç±»çº¿çš„è·ç¦»ï¼ˆå¸¦ç¬¦å·ï¼‰
 for i=1:m1
     LA1(i,1)=(A(i,:)*w1+b1)/norm(w1);
 end
@@ -101,11 +100,11 @@ end
 for i=1:m3
     LC2(i,1)=(C(i,:)*w2+b2)/norm(w2);
 end
-%ÇórA,ÕıÀàµãµÄ×î´ó¾àÀë
-%ÇórB,¸ºÀàµãµÄ×î´ó¾àÀë
+%rA
+%rB
 rA=max(abs(LA1));
 rB=max(abs(LB1));
-%ÇódeltaA,deltaB
+%deltaA,deltaB
 if size(LC1(Yc==1,1),1)~=0
     rC1=abs(max(abs(LC1(Yc==1,:))));
     if rA<rC1
@@ -118,7 +117,7 @@ if size(LC1(Yc==-1,1),1)~=0
         rB=rC2;
     end
 end
-% ÇómuA,muB,muC
+%muA,muB,muC
 muA=zeros(m1,1);
 for i=1:m1
     dis=abs( LA1(i,1));
@@ -139,7 +138,7 @@ for i=1:m3
         muC(i,1)=1-dis/(rB+delta);
     end
 end
-%ÇórhoA£¬rhoB rhoC
+%rhoAï¼ŒrhoB rhoC
 rhoA=zeros(m1,1);
 for i=1:m1
     numup=0;
@@ -251,11 +250,11 @@ for i=1:m3
         rhoC(i,1)=numup/(numdown+1);
     end
 end
-%ÇónuA,nuB,nuC,
+%nuA,nuB,nuC,
 nuA=(1-muA).*rhoA;
 nuB=(1-muB).*rhoB;
 nuC=(1-muC).*rhoC;
-%ÇósA,sB,sC
+%sA,sB,sC
 sA=zeros(m1,1);
 for i=1:m1
     if nuA(i,1)<1e-10
@@ -288,7 +287,7 @@ for i=1:m3
 end
 end
 
-%function GAB2
+%GAB2
 function [A,B,C,sA,sB,uns]=GAB2(A,B,C,D,sA,sB,sC,Yc,m)
 uns=0;
 beta=0.1;
@@ -323,7 +322,7 @@ else
 end
 end
 
-%function GU3
+%GU3
 function [u1,u2]=GU3(A,B,sA,sB,c1,c2,c3,c4)
 [m1,n]=size(A);
 m2=size(B,1);
@@ -363,7 +362,7 @@ end
 u2=Temp*alpha;
 end
 
-%function GY4
+% GY4
 function [Yc,C,D]=GY4(A,B,C,u1,u2,c1,c2,c3,c4,n1,n2,q)
 D=[];
 [m3,n]=size(C);
